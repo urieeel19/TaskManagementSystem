@@ -1,0 +1,21 @@
+# === .NET (Backend) ===
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/
+appsettings.Development.json
+
+# === Node / Frontend ===
+node_modules/
+dist/
+.angular/
+.next/
+out/
+.env.local
+.env.development.local
+
+# === Sistema ===
+.DS_Store
+Thumbs.db

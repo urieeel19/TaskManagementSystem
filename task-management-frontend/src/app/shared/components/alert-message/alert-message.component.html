@@ -1,0 +1,37 @@
+<div *ngIf="message" 
+     class="flex items-start justify-between gap-3 rounded-xl p-4 border text-sm animate-fade-in transition-all duration-300 shadow-sm shadow-slate-100/10"
+     [ngClass]="{
+       'bg-emerald-50 border-emerald-100 text-emerald-700': type === 'success',
+       'bg-red-50 border-red-100 text-red-600': type === 'error',
+       'bg-amber-50 border-amber-100 text-amber-700': type === 'warning'
+     }">
+  
+  <div class="flex items-center gap-2.5">
+    <svg *ngIf="type === 'success'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 shrink-0 text-emerald-600">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </svg>
+
+    <svg *ngIf="type === 'error'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 shrink-0 text-red-500">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+    </svg>
+
+    <svg *ngIf="type === 'warning'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 shrink-0 text-amber-600">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+    </svg>
+
+    <span class="font-medium leading-5">{{ message }}</span>
+  </div>
+
+  <button type="button" 
+          (click)="onClose()" 
+          class="p-0.5 rounded-lg transition-colors duration-200 cursor-pointer"
+          [ngClass]="{
+            'text-emerald-400 hover:bg-emerald-100 hover:text-emerald-800': type === 'success',
+            'text-red-400 hover:bg-red-100 hover:text-red-800': type === 'error',
+            'text-amber-400 hover:bg-amber-100 hover:text-amber-800': type === 'warning'
+          }">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+    </svg>
+  </button>
+</div>

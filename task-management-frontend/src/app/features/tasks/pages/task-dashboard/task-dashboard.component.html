@@ -1,0 +1,74 @@
+<div class="min-h-screen bg-slate-50">
+  <nav class="bg-white border-b border-slate-200 sticky top-0 z-40">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 justify-between items-center">
+        <div class="flex items-center gap-2">
+          <span class="text-xl font-black tracking-tight text-indigo-600">BallastLane</span>
+          <span
+            class="text-xs bg-slate-100 text-slate-600 font-semibold px-2 py-0.5 rounded-full border border-slate-200">Tasks
+            HUB</span>
+        </div>
+        <button (click)="onLogout()"
+          class="text-sm font-semibold text-slate-600 hover:text-red-600 transition-colors flex items-center gap-1 cursor-pointer">
+          Sign Out
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+            class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <app-alert-message [type]="'error'" [message]="apiDashboardError" (close)="apiDashboardError = null">
+    </app-alert-message>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">My Persisted Tasks</h1>
+        <p class="mt-1 text-sm text-slate-500">Interactive dashboard integrated with a .NET atomic JSON file database
+          backend.</p>
+      </div>
+      <button (click)="openCreateModal()"
+        class="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-xl shadow-md shadow-indigo-100 transition-all gap-1.5 self-start sm:self-auto cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+          class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        New Task
+      </button>
+    </div>
+
+    <ng-container *ngIf="tasks$ | async as taskList">
+      <div *ngIf="taskList.length > 0; else emptyState" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <app-task-card *ngFor="let item of taskList; trackBy: trackByTaskId" [task]="item"
+          (edit)="openEditModal($event)" (delete)="onDeleteTask($event)">
+        </app-task-card>
+      </div>
+
+      <ng-template #emptyState>
+        <div class="text-center rounded-2xl bg-white border border-dashed border-slate-200 p-12 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"
+            class="mx-auto h-12 w-12 text-slate-300">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75 2.25 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.25 2.25 0 0 1 10.5 2.25h4.5a2.25 2.25 0 0 1 2.25 2.25m-10.5 0c-.167.004-.334.008-.5.012A2.25 2.25 0 0 0 4.25 6.67v12.08a2.25 2.25 0 0 0 2.25 2.25H12" />
+          </svg>
+          <h3 class="mt-4 text-sm font-semibold text-slate-900">No pending tasks found</h3>
+          <p class="mt-1 text-sm text-slate-500">Get started by creating your first task using the button above.</p>
+        </div>
+      </ng-template>
+    </ng-container>
+  </main>
+
+  <div *ngIf="isModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden border border-slate-100">
+
+      <app-task-modal-form [taskToEdit]="selectedTask" [errorMessage]="apiTaskError" (saveCreate)="handleCreate($event)"
+        (saveUpdate)="handleUpdate($event)" (clearError)="apiTaskError = null" (close)="closeModal()">
+      </app-task-modal-form>
+
+    </div>
+  </div>
+</div>
