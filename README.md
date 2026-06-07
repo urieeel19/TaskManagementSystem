@@ -6,6 +6,21 @@ The platform implements a domain-driven architectural blueprint following **Clea
 
 ---
 
+## 📖 Informal User Story
+
+Following the assignment guidelines outlined in "Net - BLA - Technical Interview Exercise - V5 (1)_5.pdf", the design and development of this system were driven by a core user requirement mapped into the following scenario:
+
+> **As a** Project Collaborator,  
+> **I want to** authenticate securely into my personal dashboard and manage my daily responsibilities (creating, reading, updating, and removing tasks),  
+> **So that** I can maintain absolute focus on my active deliverables and ensure strict multi-tenant data isolation from other team members.
+
+### 📝 Functional Acceptance Criteria
+- **Multi-Tenant Isolation:** A logged-in user can only execute CRUD actions on tasks linked directly to their own account. Accessing, editing, or mutating another user's records is strictly prohibited.
+- **Task Attributes Validation:** Every task must enforce a non-empty Title, a detailed Description, a defined Status (Pending, In Progress, Completed), and a valid Due Date.
+- **Cryptographic Guardrails:** The system must validate user presence through JSON Web Tokens (JWT) for all authorized endpoint operations.
+
+---
+
 ## 🛠️ Technological Stack
 
 ### 🖥️ Backend (Core Engine)
@@ -16,14 +31,14 @@ The platform implements a domain-driven architectural blueprint following **Clea
 - **Unit Testing Suite:** xUnit + Moq (Perimetral coverage mirroring Handlers and Controllers with absolute mock-isolation)
 
 ### 🎨 Frontend (User Interface)
-- **Framework:** Angular 16.2.x (with Angular CLI 16.2.16)
+- **Framework:** Angular 16.2.x (built with Angular CLI 16.2.16)
 - **Runtime Workspace:** Node.js v16.20.2 & npm 8.19.4
 - **UI Styling Engine:** **Tailwind CSS** (Engineered using a utility-first clean architectural approach, guaranteeing a highly responsive layout, seamless interactive visual states, and cohesive component definitions without the technical debt of legacy CSS files)
 - **State Management:** Reactive streams (RxJS) aligned with the User Interface lifecycle
 
 ### 🏗️ Architectural Approach (CQS Real-World Pattern)
-Unlike typical CRUD architectures or heavy third-party framework reliance (such as MediatR), this solution enforces a lightweight, high-performance **CQS (Command Query Separation)** implementation mapped via native reflection scanning:
-- **Commands:** Mutate state, execute asynchronous workflows, return pure business data wrappers, and utilize native, immutable C# `records` as Data Transfer Objects (DTOs).
+Unlike typical CRUD architectures or heavy third-party framework reliance (such as MediatR), this solution enforces a lightweight, high-performance **CQS (Command Query Separation)** implementation mapped via native reflection scanning
+- **Commands:** Mutate state, execute asynchronous workflows, return pure business data wrappers, and utilize native, immutable C# records as Data Transfer Objects (DTOs).
 - **Queries:** Retrieve data cleanly using streamlined database projections with zero side effects.
 - **Isolated Handlers:** Single-responsibility processing units that encapsulate fail-fast structural data validation and business domain logic boundaries.
 
@@ -31,13 +46,19 @@ Unlike typical CRUD architectures or heavy third-party framework reliance (such 
 
 ## 🔑 Demo Credentials (Database Seeding)
 
-To streamline the evaluation process for the technical jury, the application includes an idempotent **Database Seeding** mechanism. Upon Backend bootstrap, if the database collections are determined to be virgin/empty, the system automatically injects the following mocked security profiles with cryptographically secure hashed passwords:
+To streamline the evaluation process for the technical jury, the application includes an idempotent **Database Seeding** mechanism. Upon Backend bootstrap, if the database collections are determined to be virgin or empty, the system automatically runs a seeding routine to generate three distinct security profiles.
 
-| Username | Password | Context / Simulated Demo Scenario |
-| :--- | :--- | :--- |
-| **`user_alpha`** | `Password123!` | Historical user account (Created 5 days ago). Ideal for inspecting a fully loaded task board and historical metrics. |
-| **`user_beta`** | `Password123!` | Active user account (Created 3 days ago) containing mid-frequency data. |
-| **`user_gamma`** | `Password123!` | Freshly created account (Created 1 day ago) for testing clean slate initial states. |
+These profiles allow immediate testing of different dataset timelines using a universal credential password:
+
+- **Universal Seeding Password:** `Password123!`
+
+### Seeded Profiles Information:
+
+| Username | Context / Simulated Demo Scenario |
+| :--- | :--- |
+| **`user_alpha`** | Historical user account created 5 days ago[cite: 1]. Ideal for inspecting a fully loaded task board and historical metrics. |
+| **`user_beta`** | Active user account created 3 days ago[cite: 1] containing mid-frequency data. |
+| **`user_gamma`** | Freshly created account created 1 day ago[cite: 1] for testing clean slate initial states. |
 
 ---
 
